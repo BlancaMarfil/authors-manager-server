@@ -1,10 +1,13 @@
 const express = require("express");
 const graphqlHttp = require("express-graphql").graphqlHTTP;
 const mongoose = require("mongoose");
+const cors = require("cors");
 const graphqlSchema = require("./graphql/schema");
 const graphqlResolvers = require("./graphql/resolvers");
 
 const app = express();
+
+app.use(cors());
 
 app.use(
   "/graphql",
