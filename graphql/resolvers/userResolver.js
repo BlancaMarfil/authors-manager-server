@@ -1,4 +1,5 @@
 const User = require("../../models/user");
+const bcrypt = require("bcrypt");
 
 module.exports = {
   users: async () => {
@@ -18,12 +19,14 @@ module.exports = {
   createUser: async (args) => {
     try {
       const { email, password } = args.user;
+      const hashedPassword = await bcrypt.hash(password, 10);
+
       const user = new User({
-        email,
-        password,
+        email: email,
+        password: hashedPassword,
       });
       const newUser = await user.save();
-      return { ...newUser._doc, _id: newUser.id };
+      return { userId: newUser.userId, email: newUser.email };
     } catch (error) {
       throw error;
     }

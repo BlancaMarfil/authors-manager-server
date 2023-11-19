@@ -2,9 +2,14 @@ module.exports = `
 
   type User {
     _id: ID!
+    userId: String!
     email: String!
     password: String!
-    user_id: String!
+  }
+
+  type RegistrationUser {
+    userId: String!
+    email: String!
   }
 
   input UserInput {
@@ -17,6 +22,6 @@ module.exports = `
   }
 
   extend type Mutation {
-    createUser(user:UserInput): User
+    createUser(user:UserInput): RegistrationUser
   }
 `;
