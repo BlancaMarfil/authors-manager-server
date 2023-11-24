@@ -39,8 +39,20 @@ module.exports = {
         email: email,
         password: hashedPassword,
       });
+
+      const token = jwt.sign(
+        { userId: user.userId, email: user.email },
+        "secret-key",
+        { expiresIn: "1h" }
+      );
+      user["token"] = token;
+
       const newUser = await user.save();
-      return { userId: newUser.userId, email: newUser.email };
+      return {
+        userId: newUser.userId,
+        email: newUser.email,
+        token: newUser.token,
+      };
     } catch (error) {
       throw error;
     }
@@ -50,12 +62,14 @@ module.exports = {
     const { email, password } = args.credentials;
 
     const user = await User.findOne({ email });
+    console.log("USETR", user);
 
     if (!user) {
       throw new Error("User not found");
     }
 
     const isPasswordMatch = await bcrypt.compare(password, user.password);
+    console.log("IS PASSWORD MARTCH", isPasswordMatch);
 
     if (!isPasswordMatch) {
       throw new Error("Incorrect password");
@@ -67,10 +81,12 @@ module.exports = {
       { expiresIn: "1h" }
     );
 
+    console.log("TOKEN", token);
+
     return {
       userId: user.userId,
       email: user.email,
-      token,
+      token: token,
     };
   },
 };
