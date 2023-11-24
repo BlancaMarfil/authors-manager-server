@@ -18,6 +18,11 @@ module.exports = `
     dateRead: String!
   }
 
+  input BookFromCatalogueInput {
+    userId: String!
+    bookId: String!
+  }
+
   extend type Query {
     authorsByUserId(userId: String!): [String!]
     bookEntriesByUserId(userId: String!): [BookEntry]!
@@ -26,5 +31,7 @@ module.exports = `
   extend type Mutation {
     addAuthorToUserCatalogue(input: AuthorToCatalogueInput): Catalogue
     addBookToUserCatalogue(input: BookToCatalogueInput): Catalogue
+    removeAuthorFromUserCatalogue(input: AuthorToCatalogueInput): Catalogue
+    removeBookFromUserCatalogue(input: BookFromCatalogueInput): Catalogue
   }
 `;
