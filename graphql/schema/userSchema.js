@@ -20,6 +20,7 @@ module.exports = `
   extend type Query {
     users:[User!]
     userById(userId: String!): User
+    userByToken(token: String!): User
   }
 
   extend type Mutation {

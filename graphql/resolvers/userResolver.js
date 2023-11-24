@@ -30,6 +30,19 @@ module.exports = {
     }
   },
 
+  userByToken: async (args) => {
+    const { token } = args;
+    try {
+      const userFound = await User.findOne({ token: token });
+      return {
+        userId: userFound.userId,
+        email: userFound.email,
+      };
+    } catch (error) {
+      throw error;
+    }
+  },
+
   createUser: async (args) => {
     try {
       const { email, password } = args.user;
@@ -83,10 +96,16 @@ module.exports = {
 
     console.log("TOKEN", token);
 
+    const updatedUser = await User.findOneAndUpdate(
+      { userId: user.userId },
+      { $set: { token: token } },
+      { new: true, upsert: true } // Return the updated document and create if not found
+    );
+
     return {
-      userId: user.userId,
-      email: user.email,
-      token: token,
+      userId: updatedUser.userId,
+      email: updatedUser.email,
+      token: updatedUser.token,
     };
   },
 };
