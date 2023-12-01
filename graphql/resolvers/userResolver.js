@@ -75,14 +75,12 @@ module.exports = {
     const { email, password } = args.credentials;
 
     const user = await User.findOne({ email });
-    console.log("USETR", user);
 
     if (!user) {
       throw new Error("User not found");
     }
 
     const isPasswordMatch = await bcrypt.compare(password, user.password);
-    console.log("IS PASSWORD MARTCH", isPasswordMatch);
 
     if (!isPasswordMatch) {
       throw new Error("Incorrect password");
@@ -93,8 +91,6 @@ module.exports = {
       "secret-key",
       { expiresIn: "1h" }
     );
-
-    console.log("TOKEN", token);
 
     const updatedUser = await User.findOneAndUpdate(
       { userId: user.userId },

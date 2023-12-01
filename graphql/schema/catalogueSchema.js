@@ -9,7 +9,7 @@ module.exports = `
 
   input AuthorToCatalogueInput {
     userId: String!
-    authorId: String!
+    authorName: String!
   }
 
   input BookToCatalogueInput {
@@ -26,6 +26,10 @@ module.exports = `
   extend type Query {
     authorsByUserId(userId: String!): [String!]
     bookEntriesByUserId(userId: String!): [BookEntry]!
+    catalogueByUserId(userId: String!): Catalogue
+    lastBookReadByUserId(userId: String!): BookEntry
+    findAuthorbyName(input: AuthorToCatalogueInput): Boolean
+    bookReadByUser(input: BookFromCatalogueInput): BookEntry
   }
 
   extend type Mutation {
